@@ -4,3 +4,4 @@ matplotlib
 fpdf
 plotly
 fpdf2==2.7.8  # or latest stable version
+kaleido
