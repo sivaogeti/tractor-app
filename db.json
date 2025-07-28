@@ -1,0 +1,175 @@
+{
+  "logs": [
+    {
+      "date": "2025-07-21",
+      "customer": "",
+      "location": "",
+      "tractor": "Tractor1",
+      "acres": 0.0,
+      "cost": 0,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os1",
+      "location": "cumbum",
+      "tractor": "Tractor1",
+      "acres": 1.5,
+      "cost": 150,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os2",
+      "location": "cumbum",
+      "tractor": "Tractor1 ",
+      "acres": 2.0,
+      "cost": 200,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os2",
+      "location": "cumbum",
+      "tractor": "Tractor2",
+      "acres": 2.0,
+      "cost": 200,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os4",
+      "location": "cumbum",
+      "tractor": "Tractor3",
+      "acres": 1.0,
+      "cost": 100,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os5",
+      "location": "cumbum",
+      "tractor": "Tractor4",
+      "acres": 5.0,
+      "cost": 500,
+      "employee": "employee2"
+    },
+    {
+      "date": "2025-07-21",
+      "customer": "os6",
+      "location": "cumbum",
+      "tractor": "Tractor5",
+      "acres": 10.0,
+      "cost": 1000,
+      "employee": "employee2"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os1",
+      "location": "Markapuram",
+      "tractor": "Tractor1",
+      "acres": 2.5,
+      "cost": 250,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os2",
+      "location": "Markapuram",
+      "tractor": "Tractor2",
+      "acres": 8.5,
+      "cost": 850,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os3",
+      "location": "Bapatla",
+      "tractor": "Tractor2",
+      "acres": 7.0,
+      "cost": 700,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os4",
+      "location": "Bapatla",
+      "tractor": "Tractor3",
+      "acres": 6.5,
+      "cost": 650,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os4",
+      "location": "Bapatla",
+      "tractor": "Tractor4",
+      "acres": 10.5,
+      "cost": 1050,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os1",
+      "location": "Markapuram",
+      "tractor": "Tractor6",
+      "acres": 2.0,
+      "cost": 200,
+      "employee": "employee2"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os2",
+      "location": "Markapuram",
+      "tractor": "Tractor6",
+      "acres": 5.0,
+      "cost": 500,
+      "employee": "employee2"
+    },
+    {
+      "date": "2025-07-23",
+      "customer": "os3",
+      "location": "Cumbum",
+      "tractor": "Tractor7",
+      "acres": 5.0,
+      "cost": 500,
+      "employee": "employee2"
+    },
+    {
+      "date": "2025-07-22",
+      "customer": "os10",
+      "location": "Markapuram",
+      "tractor": "Tractor1",
+      "acres": 2.0,
+      "cost": 200,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-24",
+      "customer": "os10",
+      "location": "Markapuram",
+      "tractor": "tractor1",
+      "acres": 0.5,
+      "cost": 50,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-24",
+      "customer": "os1",
+      "location": "Markapuram",
+      "tractor": "tractor1",
+      "acres": 1.0,
+      "cost": 100,
+      "employee": "employee1"
+    },
+    {
+      "date": "2025-07-24",
+      "customer": "OS",
+      "location": "Cumbum",
+      "tractor": "tractor1",
+      "acres": 15.0,
+      "cost": 1500,
+      "employee": "employee1"
+    }
+  ]
+}
