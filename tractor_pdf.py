@@ -21,9 +21,13 @@ class TractorPDF(FPDF):
         self.set_text_color(120)
         self.cell(0, 10, f"Tractor Logger | Page {self.page_no()}", align="C")
 
-    def add_banner(self, banner_path="images/tractor_banner.png"):
-        self.image(banner_path, x=10, y=10, w=180)
-        self.set_y(200)
+    def add_banner(self):
+        self.add_page()  # ✅ Add this to create a page
+        banner_path = os.path.join("assets", "tractor_banner.png")
+        if os.path.exists(banner_path):
+            self.image(banner_path, x=10, y=10, w=180)
+            self.ln(30)
+
 
     def add_summary(self, total_acres, total_cost, total_logs):
         self.set_font("DejaVu", size=12)
