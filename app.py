@@ -13,6 +13,25 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Tractor Logger", layout="wide")
 
+# --- HELP ---
+# Show Help in Sidebar — even before login
+with st.sidebar.expander("❓ Help"):
+    st.markdown("""
+    **🧑‍🌾 Tractor Logging App – Quick Help**
+    
+    - **Login** using the mobile number and password provided by admin.
+    - **Employees** can:
+        - Log daily tractor work.
+        - See their own records.
+    - **Admins** can:
+        - View all logs.
+        - Filter, summarize, and export reports.
+    - **Cost**: ₹100 per acre (fixed).
+    - Entries allowed for today's date only.
+    
+    🔒 Secure: No data is stored on device. Contact admin for support.
+    """)
+
 # --- SESSION STATE ---
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -42,25 +61,6 @@ st.sidebar.write(f"Logged in as: `{st.session_state.username}` ({st.session_stat
 if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
-
-# --- HELP ---
-with st.sidebar.expander("❓ Help"):
-    st.markdown("""
-    **Tractor App – Quick Help**
-    
-    - **Login** with your credentials (sent via SMS).
-    - **Employee** can:
-        - Log daily work.
-        - View their own entries.
-    - **Admin** can:
-        - View all logs.
-        - Filter, chart, and export data.
-    - **Cost** is ₹100 per acre.
-    - Only today's date is allowed for entries.
-    
-    🔒 Credentials are secure. Contact admin if lost.
-    """)
-
 
 # --- EMPLOYEE DASHBOARD ---
 if st.session_state.role == "employee":
