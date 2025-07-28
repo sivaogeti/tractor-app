@@ -3,7 +3,8 @@ from fpdf.enums import XPos, YPos
 from datetime import datetime
 import plotly.io as pio
 import io
-
+import plotly.io as pio
+pio.kaleido.scope.default_format = "png"
 
 class TractorPDF(FPDF):
     def __init__(self):
