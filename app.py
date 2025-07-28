@@ -43,6 +43,25 @@ if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
     st.rerun()
 
+# --- HELP ---
+with st.sidebar.expander("❓ Help"):
+    st.markdown("""
+    **Tractor App – Quick Help**
+    
+    - **Login** with your credentials (sent via SMS).
+    - **Employee** can:
+        - Log daily work.
+        - View their own entries.
+    - **Admin** can:
+        - View all logs.
+        - Filter, chart, and export data.
+    - **Cost** is ₹100 per acre.
+    - Only today's date is allowed for entries.
+    
+    🔒 Credentials are secure. Contact admin if lost.
+    """)
+
+
 # --- EMPLOYEE DASHBOARD ---
 if st.session_state.role == "employee":
     st.title("📝 Employee Dashboard")
