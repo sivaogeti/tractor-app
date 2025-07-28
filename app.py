@@ -151,7 +151,7 @@ elif st.session_state.role == "admin":
     if st.button("📄 Export Summary to PDF"):
         with st.spinner("Generating PDF..."):
             pdf = TractorPDF()
-            pdf.add_summary_table(df)
+            pdf.add_summary(total_acres, total_cost, total_logs)
             pdf.add_chart_page_matplotlib(df, chart_type="tractor")
             pdf.add_chart_page_matplotlib(df, chart_type="location")
             pdf.add_chart_page_matplotlib(df, chart_type="employee")
