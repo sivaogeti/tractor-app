@@ -22,6 +22,9 @@ A private admin dashboard built with [Streamlit](https://streamlit.io/) to manag
 - `db.json` – Local storage for log entries (temporary)
 - `requirements.txt` – App dependencies
 
+##  License
+“This app is only meant for internal/company use and should not be sold or used by others commercially.”
+
 ## 🚀 Deploy on Streamlit Cloud
 
 1. Push this project to GitHub
@@ -37,5 +40,3 @@ A private admin dashboard built with [Streamlit](https://streamlit.io/) to manag
 pip install -r requirements.txt
 streamlit run app.py
 
-##  License
-“This app is only meant for internal/company use and should not be sold or used by others commercially.”
