@@ -4,6 +4,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 import io
 import pandas as pd
+import os
 
 class TractorPDF(FPDF):
     def __init__(self):
