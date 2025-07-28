@@ -36,3 +36,6 @@ A private admin dashboard built with [Streamlit](https://streamlit.io/) to manag
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
+
+##  License
+“This app is only meant for internal/company use and should not be sold or used by others commercially.”
