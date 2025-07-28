@@ -1,10 +1,9 @@
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos 
 from datetime import datetime
-import plotly.io as pio
+import matplotlib.pyplot as plt
 import io
-import plotly.io as pio
-pio.kaleido.scope.default_format = "png"
+import pandas as pd
 
 class TractorPDF(FPDF):
     def __init__(self):
@@ -14,7 +13,6 @@ class TractorPDF(FPDF):
         self.set_font("DejaVu", size=12)
 
     def header(self):
-        # Optional: add a header on each page
         pass
 
     def footer(self):
@@ -33,15 +31,38 @@ class TractorPDF(FPDF):
         self.cell(0, 10, f"Total Cost: ₹{total_cost:,}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.cell(0, 10, f"Total Logs: {total_logs}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    def add_chart_page(self, fig, title=""):
+    def add_chart_page(self, df, title=""):
         self.add_page()
         if title:
             self.set_font("DejaVu", size=12)
             self.cell(0, 10, title, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-        img_bytes = pio.to_image(fig, format="png", width=800, height=400, scale=2)
-        img_stream = io.BytesIO(img_bytes)
-        self.image(img_stream, x=10, w=180)
+        # Generate Matplotlib chart from DataFrame
+        fig, ax = plt.subplots(figsize=(8, 4))
+
+        if "tractor" in df.columns and "acres" in df.columns:
+            ax.bar(df["tractor"], df["acres"], color='skyblue')
+            ax.set_title("Tractor Usage")
+        elif "location" in df.columns and "acres" in df.columns:
+            ax.bar(df["location"], df["acres"], color='lightgreen')
+            ax.set_title("Acres by Location")
+        elif "employee" in df.columns and "acres" in df.columns:
+            ax.bar(df["employee"], df["acres"], color='salmon')
+            ax.set_title("Acres by Employee")
+        elif "day" in df.columns and "cost" in df.columns:
+            ax.plot(df["day"], df["cost"], marker='o')
+            ax.set_title("Daily Cost Trend")
+
+        ax.set_xlabel(df.columns[0].title())
+        ax.set_ylabel(df.columns[1].title())
+        plt.tight_layout()
+
+        buf = io.BytesIO()
+        fig.savefig(buf, format='png')
+        plt.close(fig)
+        buf.seek(0)
+
+        self.image(buf, x=10, w=180)
 
     def add_log_table(self, df):
         self.add_page()
@@ -50,14 +71,12 @@ class TractorPDF(FPDF):
         self.ln(5)
 
         col_width = self.w / len(df.columns) - 5
-        th = 8  # row height
+        th = 8
 
-        # Table header
         for col in df.columns:
             self.cell(col_width, th, str(col), border=1)
         self.ln(th)
 
-        # Table rows (limit 50 for sanity)
         for i, row in df.iterrows():
             if i >= 50:
                 self.cell(0, th, "... Table truncated to 50 rows ...", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
