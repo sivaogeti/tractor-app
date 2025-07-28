@@ -31,30 +31,41 @@ class TractorPDF(FPDF):
         self.cell(0, 10, f"Total Cost: ₹{total_cost:,}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
         self.cell(0, 10, f"Total Logs: {total_logs}", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-    def add_chart_page(self, df, title=""):
+    def add_chart_page_matplotlib(self, df, chart_type="tractor"):
+        """Create a chart page using Matplotlib (used only in PDF export)."""
         self.add_page()
-        if title:
-            self.set_font("DejaVu", size=12)
-            self.cell(0, 10, title, new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        self.set_font("DejaVu", size=12)
+        self.cell(0, 10, f"{chart_type.title()} Chart", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-        # Generate Matplotlib chart from DataFrame
         fig, ax = plt.subplots(figsize=(8, 4))
 
-        if "tractor" in df.columns and "acres" in df.columns:
-            ax.bar(df["tractor"], df["acres"], color='skyblue')
-            ax.set_title("Tractor Usage")
-        elif "location" in df.columns and "acres" in df.columns:
-            ax.bar(df["location"], df["acres"], color='lightgreen')
-            ax.set_title("Acres by Location")
-        elif "employee" in df.columns and "acres" in df.columns:
-            ax.bar(df["employee"], df["acres"], color='salmon')
-            ax.set_title("Acres by Employee")
-        elif "day" in df.columns and "cost" in df.columns:
-            ax.plot(df["day"], df["cost"], marker='o')
-            ax.set_title("Daily Cost Trend")
+        if chart_type == "tractor" and "tractor" in df.columns and "acres" in df.columns:
+            agg = df.groupby("tractor")["acres"].sum()
+            ax.bar(agg.index, agg.values, color='skyblue')
+            ax.set_title("Tractor Usage (Acres)")
+            ax.set_ylabel("Acres")
 
-        ax.set_xlabel(df.columns[0].title())
-        ax.set_ylabel(df.columns[1].title())
+        elif chart_type == "location" and "location" in df.columns and "acres" in df.columns:
+            agg = df.groupby("location")["acres"].sum()
+            ax.bar(agg.index, agg.values, color='lightgreen')
+            ax.set_title("Acres by Location")
+            ax.set_ylabel("Acres")
+
+        elif chart_type == "employee" and "employee" in df.columns and "acres" in df.columns:
+            agg = df.groupby("employee")["acres"].sum()
+            ax.bar(agg.index, agg.values, color='salmon')
+            ax.set_title("Acres by Employee")
+            ax.set_ylabel("Acres")
+
+        elif chart_type == "trend" and "date" in df.columns and "cost" in df.columns:
+            df["day"] = pd.to_datetime(df["date"]).dt.date
+            trend = df.groupby("day")["cost"].sum()
+            ax.plot(trend.index, trend.values, marker='o')
+            ax.set_title("Daily Cost Trend")
+            ax.set_ylabel("Cost")
+
+        ax.set_xlabel(chart_type.title())
+        plt.xticks(rotation=45)
         plt.tight_layout()
 
         buf = io.BytesIO()
