@@ -1,4 +1,4 @@
-# Updated app.py with the 3 requested enhancements
+# Updated app.py with Plotly for UI and Matplotlib for PDF export
 
 import streamlit as st
 from auth import authenticate
@@ -8,9 +8,8 @@ import pandas as pd
 import plotly.express as px
 import io
 import base64
-from fpdf.enums import XPos, YPos
 from tractor_pdf import TractorPDF
-import plotly.io as pio
+import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Tractor Logger", layout="wide")
 
@@ -110,7 +109,6 @@ elif st.session_state.role == "admin":
         df = df[df["location"].isin(location_filter)]
     if tractor_filter:
         df = df[df["tractor"].isin(tractor_filter)]
-    df["date"] = pd.to_datetime(df["date"])
     if date_range and len(date_range) == 2:
         df = df[(df["date"] >= pd.to_datetime(date_range[0])) & (df["date"] <= pd.to_datetime(date_range[1]))]
 
@@ -138,36 +136,27 @@ elif st.session_state.role == "admin":
     with tab2:
         st.dataframe(df.groupby("employee")[["acres", "cost"]].sum().reset_index())
 
-    # --- Charts ---
-    pio.templates.default = "plotly_dark" if st.sidebar.toggle("🌙 Dark Mode") else "plotly_white"
+    st.subheader("📊 Charts")
+    fig1 = px.pie(df, names="tractor", title="Tractor Usage")
+    fig2 = px.bar(df.groupby("location")["acres"].sum().reset_index(), x="location", y="acres")
+    fig3 = px.bar(df.groupby("employee")["acres"].sum().reset_index(), x="employee", y="acres")
+    df["day"] = df["date"].dt.date
+    fig4 = px.line(df.groupby("day")["cost"].sum().reset_index(), x="day", y="cost", markers=True)
 
-    if not df.empty:
-        st.subheader("📊 Charts")
-        fig1 = px.pie(df, names="tractor", title="Tractor Usage")
-        fig2 = px.bar(df.groupby("location")["acres"].sum().reset_index(), x="location", y="acres")
-        fig3 = px.bar(df.groupby("employee")["acres"].sum().reset_index(), x="employee", y="acres")
-        df["day"] = df["date"].dt.date
-        fig4 = px.line(df.groupby("day")["cost"].sum().reset_index(), x="day", y="cost", markers=True)
+    for fig in [fig1, fig2, fig3, fig4]:
+        st.plotly_chart(fig, use_container_width=True)
 
-        for fig in [fig1, fig2, fig3, fig4]:
-            st.plotly_chart(fig, use_container_width=True)
-
-    # --- CSV Export ---
     st.download_button("📥 Download CSV", df.to_csv(index=False).encode("utf-8"), "tractor_logs.csv")
 
-    # --- PDF Export ---
     if st.button("📄 Export Summary to PDF"):
         with st.spinner("Generating PDF..."):
             pdf = TractorPDF()
-            pdf.add_page()
-            pdf.add_banner("images/tractor_banner.png")
-            pdf.set_y(200)
-            pdf.add_summary(total_acres, total_cost, total_logs)
-            for idx, chart in enumerate([fig1, fig2, fig3, fig4], start=1):
-                pdf.add_chart_page(chart, title=f"Chart {idx}")
-            if not df.empty:
-                pdf.add_log_table(df)
+            pdf.add_summary_table(df)
+            pdf.add_chart_page_matplotlib(df, chart_type="tractor")
+            pdf.add_chart_page_matplotlib(df, chart_type="location")
+            pdf.add_chart_page_matplotlib(df, chart_type="employee")
+            pdf.add_chart_page_matplotlib(df, chart_type="daily")
             filename = f"tractor_summary_{datetime.now().strftime('%Y-%m-%d_%H%M')}.pdf"
-            pdf_buffer = pdf.export(filename)
-            b64 = base64.b64encode(pdf_buffer.getvalue()).decode()
+            pdf_buffer = pdf.output(dest='S').encode('latin1')
+            b64 = base64.b64encode(pdf_buffer).decode()
             st.markdown(f'<a href="data:application/pdf;base64,{b64}" download="{filename}">📥 Download PDF</a>', unsafe_allow_html=True)
