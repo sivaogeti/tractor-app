@@ -151,12 +151,19 @@ elif st.session_state.role == "admin":
     if st.button("📄 Export Summary to PDF"):
         with st.spinner("Generating PDF..."):
             pdf = TractorPDF()
+            pdf.add_banner()
             pdf.add_summary(total_acres, total_cost, total_logs)
             pdf.add_chart_page_matplotlib(df, chart_type="tractor")
             pdf.add_chart_page_matplotlib(df, chart_type="location")
             pdf.add_chart_page_matplotlib(df, chart_type="employee")
-            pdf.add_chart_page_matplotlib(df, chart_type="daily")
+            pdf.add_chart_page_matplotlib(df, chart_type="trend")
+            pdf.add_log_table(df)
+    
             filename = f"tractor_summary_{datetime.now().strftime('%Y-%m-%d_%H%M')}.pdf"
             pdf_buffer = pdf.output(dest='S').encode('latin1')
             b64 = base64.b64encode(pdf_buffer).decode()
-            st.markdown(f'<a href="data:application/pdf;base64,{b64}" download="{filename}">📥 Download PDF</a>', unsafe_allow_html=True)
+            st.markdown(
+                f'<a href="data:application/pdf;base64,{b64}" download="{filename}">📥 Download PDF</a>',
+                unsafe_allow_html=True
+            )
+
